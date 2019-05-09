@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Merger {
 
     ArrayList<String> usersData;
+    ArrayList<String> mergedData;
 
     /**
       Construct an instance from a list of data
@@ -28,6 +29,55 @@ public class Merger {
       , int nItems  // number of items in the merged list
                     // = just past end of list1
       ) {
+
+        ArrayList<String> list1 = new ArrayList<String>();
+        for ( int index = start0; index < start1; index++) {
+          list1.add( usersData.get( index));
+        }
+
+        ArrayList<String> list2 = new ArrayList<String>();
+        for ( int index = start1; index < nItems; index++) {
+          list2.add( usersData.get (index));
+        }
+        
+        merge( list1, list2);
+        usersData = mergedData;
+    }
+
+    /**
+      Merge the sorted sub-lists recursively.
+      I haven't thought about while style much 
+      but I always seem to struggle more with
+      recursion.
+     */
+    public void merge( 
+        ArrayList<String> list1, 
+        ArrayList<String> list2
+      ) {
+
+        if ( !list1.isEmpty() && !list2.isEmpty()) {
+          if ( list1.get( 0).compareTo( list2.get( 0)) < 1) {
+            mergedData.add( list1.get( 0));
+            list1.remove( 0);
+            merge( list1, list2);
+          } else {
+            mergedData.add( list2.get( 0));
+            list2.remove( 0);
+            merge( list1, list2);
+          }
+        } 
+        
+        if ( !list1.isEmpty() && list2.isEmpty()) {
+          merge( list1);
+        } else {
+          merge( list2);
+        }
+    }
+
+    public void merge( ArrayList<String> notEmptyList) {
+      for ( int index = 0; index < notEmptyList.size(); index++) {
+        mergedData.add( notEmptyList.get( index));
+      }
     }
 
 
